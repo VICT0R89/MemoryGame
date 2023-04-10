@@ -19,7 +19,6 @@ function createBoard(array) {
     div.classList.add('card');
     div.dataset.id = card.id;
     div.dataset.value = card.value;
-    div.innerText = card.value;
     div.addEventListener('click', flipCard);
     board.appendChild(div);
   });
