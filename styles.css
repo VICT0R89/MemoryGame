@@ -18,33 +18,33 @@ body{
 }
 
 .game-board {
-  display: flex;
-  justify-content: center;
-  justify-items: center;
-  align-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 345px;
-  height: 450px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  width: 100%;
+  height: 100%;
   border: 5px solid #4d87f3;
   background-color: black;
+  padding: 0 2.5px 5px 2.5px;
 }
 
 .card {
   display: flex;
+  align-self: center;
+  justify-self: center;
   align-items: center;
   justify-content: center;
-  width: 100px;
-  height: 100px;
-  margin: 5px;
+  width: 60px;
+  height: 60px;
+  margin: 5px 0 0 0;
   background-color: #4d87f3;
-  font-size: 50px;
-  text-align: center;
   cursor: pointer;
 }
 
 .card.flippedA {
-  background-color: #0015ff;
+  background-color: #0022ff;
 }
 .card.flippedB {
   background-color: #00ff59;
@@ -56,10 +56,28 @@ body{
   background-color: #ff0015;
 }
 .card.flippedE {
-  background-color: #959191;
+  background-color: #686767;
 }
 .card.flippedF {
   background-color: #ffff00;
+}
+.card.flippedG {
+  background-color: #000b52;
+}
+.card.flippedH {
+  background-color: #00531d;
+}
+.card.flippedI {
+  background-color: #6e0048;
+}
+.card.flippedJ {
+  background-color: #570007;
+}
+.card.flippedK {
+  background-color: #292929;
+}
+.card.flippedL {
+  background-color: #5f5f00;
 }
 
 .game-stats {
@@ -82,8 +100,9 @@ body{
   font-size: 2rem;
   width: 100%;
   height: 100%;
-  left: 20%;
-  top: 20%;
+  z-index: 1;
+  padding: 150px;
+  background-color: #000000;
   display: none;
 }
 

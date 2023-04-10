@@ -1,21 +1,7 @@
-const cards = [
-  { id: 1, value: 'A' },
-  { id: 2, value: 'A' },
-  { id: 3, value: 'B' },
-  { id: 4, value: 'B' },
-  { id: 5, value: 'C' },
-  { id: 6, value: 'C' },
-  { id: 7, value: 'D' },
-  { id: 8, value: 'D' },
-  { id: 9, value: 'E' },
-  { id: 10, value: 'E' },
-  { id: 11, value: 'F' },
-  { id: 12, value: 'F' },
-];
-
 let score = 0;
 let flippedCards = [];
 let matchedCards = 0;
+let actualLvl = 0;
 
 function shuffleCards(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -24,14 +10,16 @@ function shuffleCards(array) {
   }
 }
 
-function createBoard() {
+function createBoard(array) {
   const board = document.querySelector('.game-board');
-  shuffleCards(cards);
-  cards.forEach(card => {
+  board.innerHTML = ""
+  shuffleCards(array);
+  array.forEach(card => {
     const div = document.createElement('div');
     div.classList.add('card');
     div.dataset.id = card.id;
     div.dataset.value = card.value;
+    div.innerText = card.value;
     div.addEventListener('click', flipCard);
     board.appendChild(div);
   });
@@ -43,7 +31,7 @@ function flipCard(e) {
     this.classList.add('flipped'+cardValue);
     flippedCards.push(this);
     if (flippedCards.length === 2) {
-      setTimeout(checkMatch, 1000);
+      setTimeout(checkMatch, 500);
     }
   }
 }
@@ -54,11 +42,23 @@ function checkMatch() {
   if (card1.dataset.value === card2.dataset.value) {
     score += 10;
     matchedCards += 2;
-    if (matchedCards == cards.length) {
-      const win = document.querySelector(".win");
-      const scoreWin = document.querySelector(".scoreWin");
-      scoreWin.innerText = score + " points"
-      win.classList.add("active");
+    if (matchedCards == lvls[actualLvl].length) {
+      actualLvl += 1
+      if(actualLvl == 3){
+        const board = document.querySelector('.game-board');
+        board.style.gridTemplateColumns = "repeat(4, 1fr)";
+        const win = document.querySelector(".win");
+        const scoreWin = document.querySelector(".scoreWin");
+        scoreWin.innerText = score + " points"
+        win.classList.add("active");
+      }
+      if(actualLvl == 2){
+        const board = document.querySelector('.game-board');
+        board.style.gridTemplateColumns = "repeat(5, 1fr)";
+      }
+      flippedCards = [];
+      matchedCards = 0;
+      createBoard(lvls[actualLvl])
     }
     document.querySelector('.score').textContent = `Score: ${score}`;
     flippedCards.forEach(card => {
@@ -66,7 +66,7 @@ function checkMatch() {
       card.removeEventListener('click', flipCard);
     });
   } else if (card1.dataset.value != card2.dataset.value) {
-    score -= 5;
+    score -= 2;
     document.querySelector('.score').textContent = `Score: ${score}`;
     flippedCards.forEach(card => {
       let cardValue = card.dataset.value;
@@ -82,6 +82,7 @@ function restartGame() {
   document.querySelector('.score').textContent =`Score: ${score}`;
   flippedCards = [];
   matchedCards = 0;
+  actualLvl = 0
   const win = document.querySelector(".win")
   win.classList.remove("active");
   const cards = document.querySelectorAll('.card');
@@ -89,8 +90,8 @@ function restartGame() {
     card.removeEventListener('click', flipCard);
     card.parentNode.removeChild(card);
   });
-  createBoard();
+  createBoard(lvls[actualLvl]);
 }
 
-createBoard();
+createBoard(lvls[actualLvl]);
 document.querySelector('.restart-button').addEventListener('click', restartGame);
